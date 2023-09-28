@@ -1,5 +1,6 @@
 package com.fstates.object.entity;
 
+import com.fstates.automata.State;
 import com.fstates.library.Coordinates;
 import com.fstates.object.GameObject;
 
@@ -13,9 +14,15 @@ import com.fstates.object.GameObject;
 public abstract class Entity implements GameObject
 {
 
-    private EntityType  entityType;
-    private Coordinates coordinates;
-    private double      speed;
+    /**
+     * Propriedades:
+     * 
+    */
+    private final   EntityType      entityType;
+    private         Coordinates     coordinates;
+    private         double          speed;
+    private         State<Enemy>    state;
+
 
     /**
      * Construtores com o modificador de acesso protected
@@ -28,13 +35,13 @@ public abstract class Entity implements GameObject
     */
     protected Entity(EntityType  entityType)
     {
-        this.entityType = entityType;
+        this.entityType     = entityType;
     }
 
     protected Entity(EntityType  entityType, double speed)
     {
         this(entityType);
-        this.speed = speed;
+        this.speed          = speed;
     }
     
     protected Entity(EntityType  entityType, Coordinates coordinates, double speed)
@@ -43,30 +50,40 @@ public abstract class Entity implements GameObject
         this.coordinates    = coordinates;
     }
 
-    public Entity(Entity entity){
-        coordinates = entity.getCoordinates();
-        entityType  = entity.getEntityType();
-        speed       = entity.getSpeed();
+    public Entity(Entity entity)
+    {
+        coordinates         = entity.getCoordinates();
+        entityType          = entity.getEntityType();
+        speed               = entity.getSpeed();
     }
+    // Fim dos construtores
+
+    // *****************************************************************
 
     // Get do atributo entetyType
-    public EntityType getEntityType() {
+    public EntityType getEntityType()
+    {
         return entityType;
     }
 
-    // Setters e Get do atributo coordinates
+    // Setters e Getter do atributo coordinates
     public Coordinates getCoordinates()
     {
         return coordinates;
     }
-    public void setCoordinates(Coordinates coordinates){
-        this.coordinates = coordinates;
+    public void setCoordinates(Coordinates coordinates)
+    {
+        this.coordinates    = coordinates;
     }
-    public void setCoordinates(int x,int y){
+    public void setCoordinates(int x,int y)
+    {
         coordinates.setPair(x, y);
     }
+    // Fim dos Setters e Getter do atributo coordinates
 
-    // Set e Get do atributo X
+    // *****************************************************************
+
+    // Set e Get do atributo x do atributo coordiantes
     public int getX()
     {
         return getCoordinates().getX();
@@ -77,7 +94,7 @@ public abstract class Entity implements GameObject
       getCoordinates().setX(x);
     }
 
-    // Set e Get do atributo Y
+    // Set e Get do atributo y do atributo coordiantes
     public int getY()
     {
         return getCoordinates().getY();
@@ -86,18 +103,50 @@ public abstract class Entity implements GameObject
     {
       getCoordinates().setY(y);
     }
+    // Fim dos Setters e Getters dos atributos x & y do atributo coordinates
 
-    // Set e Get do atributo speed
-    public double getSpeed() {
+    // *****************************************************************
+
+    // Setter e Getter do atributo speed
+    public double getSpeed()
+    {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(double speed)
+    {
         this.speed = speed;
+    }
+    // Fim do Setter e Getter do atribudo speed
+
+    // *****************************************************************
+
+    /** 
+     * Método raíz para chamar outros métodos que modificarão
+     * as propriedades do objeto.
+     */
+    public void update()
+    {
+
+    }
+
+    public void changeState(State state)
+    {
+        this.state = state;
     }
 
     @Override
-    public Entity clone(){
+    public Entity clone()
+    {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "[\n" + 
+        "\tEntity type\t\t= "   + entityType    + "\n" +
+        "\tCoordinate\t= "      + coordinates   + "\n" +
+        "\tSpeed\t= "           + speed         + "\n" +
+        "\tState\t= "           + state         + "\n";
     }
 }

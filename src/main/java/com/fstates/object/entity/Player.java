@@ -1,5 +1,6 @@
 package com.fstates.object.entity;
 
+import com.fstates.automata.State;
 import com.fstates.library.Coordinates;
 /**
  * A famigerada classe player, como podemos ver foi aplicado o
@@ -7,7 +8,8 @@ import com.fstates.library.Coordinates;
  * inteiro. Então para evitar erros ou instâncias de player desnecessária
  * voilà
 */
-public class Player extends Entity{
+public class Player extends Entity
+{
     private        String name;
     private static Player instance;
 
@@ -24,5 +26,10 @@ public class Player extends Entity{
             instance = new Player (name, coordinates);
         }
         return instance;
+    }
+
+    @Override
+    public String toString() {
+        return "Player" + super.toString();
     }
 }

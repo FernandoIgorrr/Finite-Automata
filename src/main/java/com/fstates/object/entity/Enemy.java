@@ -1,8 +1,10 @@
 package com.fstates.object.entity;
 
+import com.fstates.automata.State;
 import com.fstates.library.Coordinates;
 
-public class Enemy extends Entity{
+public class Enemy extends Entity
+{
 
     public Enemy(Coordinates coordinates)
     {
@@ -10,7 +12,8 @@ public class Enemy extends Entity{
     }
 
     @Override
-    public Enemy clone(){
+    public Enemy clone()
+    {
         return new Enemy(getCoordinates());
     }
 }
