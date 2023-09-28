@@ -144,9 +144,9 @@ public abstract class Entity implements GameObject
     @Override
     public String toString() {
         return "[\n" + 
-        "\tEntity type\t\t= "   + entityType    + "\n" +
+        "\tEntity type\t= "   + entityType    + "\n" +
         "\tCoordinate\t= "      + coordinates   + "\n" +
-        "\tSpeed\t= "           + speed         + "\n" +
-        "\tState\t= "           + state         + "\n";
+        "\tSpeed\t\t= "           + speed         + "\n" +
+        "\tState\t\t= "           + state         + "\n";
     }
 }
