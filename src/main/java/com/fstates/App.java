@@ -6,10 +6,6 @@ import com.fstates.game.GamePanel;
 import com.fstates.library.Coordinates;
 import com.fstates.object.entity.Player;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )

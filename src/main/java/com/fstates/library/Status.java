@@ -68,6 +68,7 @@ public class Status {
     // Setters e Getter dos atributos de combate
     //--health
     public int getHealth()
+
     {
         return health;
     }
@@ -125,8 +126,7 @@ public class Status {
         this.physicalCriticalHit    = physicalCriticalHit;
     }
 
-    public void addsphysicalCriticalHit(double additionalPhysicalCriticalHit)
-    {
+    public void addsphysicalCriticalHit(double additionalPhysicalCriticalHit) {
         physicalCriticalHit         += additionalPhysicalCriticalHit;
     }
 
@@ -181,15 +181,15 @@ public class Status {
     @Override
     public String toString() {
         return "Status [\n" +
-            "\t\t Health\t\t\t\t= "                 + health                + "\n" +
+            "\t\t Health\t\t\t\t= "               + health                + "\n" +
             "\t\t Attack Damage\t\t\t= "          + attackDamage          + "\n" +
             "\t\t Spell power\t\t\t= "            + spellPower            + "\n" +
-            "\t\t Armor\t\t\t\t= "                  + armor                 + "\n" +
+            "\t\t Armor\t\t\t\t= "                + armor                 + "\n" +
             "\t\t Magic Resistance\t\t= "         + magicResist           + "\n" +
             "\t\t Crítical chance\t\t= "          + physicalCriticalHit   + "\n" +
             "\t\t Crítical chance (magical)\t= "  + magicalCriticalHit    + "\n" +
-            "\t\t Critical Damage\t\t= "            + criticalDamage        + "\n" +
-            "\t\t Haste\t\t\t\t= "                     + haste                 + "\n" +
+            "\t\t Critical Damage\t\t= "          + criticalDamage        + "\n" +
+            "\t\t Haste\t\t\t\t= "                + haste                 + "\n" +
             "\t\t]";
     }
 

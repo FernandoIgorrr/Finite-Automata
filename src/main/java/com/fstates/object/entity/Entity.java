@@ -1,7 +1,12 @@
 package com.fstates.object.entity;
 
-import com.fstates.automata.NoAnimation;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
+
+import com.fstates.automata.ActionType;
 import com.fstates.automata.State;
+import com.fstates.game.GamePanel;
 import com.fstates.library.Coordinates;
 import com.fstates.library.Direction;
 import com.fstates.library.Status;
@@ -24,6 +29,10 @@ public abstract class Entity implements GameObject
     private         State<Entity>   state;
     private         Status          status;
 
+    public          GamePanel       gamePanel;
+
+    protected Map<ActionType, BufferedImage>    actionsSprites;
+
     /**
      * Construtores com o modificador de acesso protected
      * para apenas as classes derivadas poderem invoca-lo.
@@ -33,26 +42,27 @@ public abstract class Entity implements GameObject
      * é, simplemente completo com o construtor "anterior"
      * no que se refere a quantidades de parâmetros.
     */
-    protected Entity(EntityType  entityType)
+    protected Entity(EntityType  entityType, GamePanel gamePanel)
     {
         this.entityType     = entityType;
+        this.gamePanel      = gamePanel;
         status              = new Status();
     }
 
-    protected Entity(EntityType  entityType, double speed)
+    protected Entity(EntityType  entityType, GamePanel gamePanel, double speed)
     {
-        this(entityType);
+        this(entityType, gamePanel);
         this.speed          = speed;
     }
     
-    protected Entity(EntityType  entityType, Coordinates coordinates, double speed)
+    protected Entity(EntityType  entityType, GamePanel gamePanel, Coordinates coordinates, double speed)
     {
-        this(entityType,speed);
+        this(entityType, gamePanel,speed);
         this.coordinates    = coordinates;
     }
 
-    protected Entity(EntityType  entityType, State state, Coordinates coordinates, double speed){
-        this(entityType,coordinates,speed);
+    protected Entity(EntityType  entityType, GamePanel gamePanel, State state, Coordinates coordinates, double speed){
+        this(entityType, gamePanel, coordinates,speed);
         this.state = state;
     }
 
@@ -142,12 +152,9 @@ public abstract class Entity implements GameObject
 
     // *****************************************************************
 
-    /** 
-     * Método raíz para chamar outros métodos que modificarão
-     * as propriedades do objeto.
-     */
-
-    public void move(Direction direction){
+    //Recebe uma direção e então suas coordenadas mudam para a "direção"
+    public void move(Direction direction)
+    {
         switch(direction){
             case NORTH:
                 setY(getY()-(int)speed);
@@ -183,11 +190,20 @@ public abstract class Entity implements GameObject
         }
     }
 
+     /** 
+     * Método raíz para chamar outros métodos que modificarão
+     * as propriedades do objeto.
+     */
 
     public void update()
     {
-        this.state.execute(this);
+        state.execute(this);
     }
+
+    // Desenha o player na tela
+    public abstract void draw(Graphics g);
+
+    public abstract void loadSprites();
 
     /**
      * Método para alterar o estado da entidade baseado no padrão State Design, 

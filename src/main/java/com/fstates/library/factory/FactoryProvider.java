@@ -6,7 +6,8 @@ import java.util.Map;
 public class FactoryProvider{
 
     private Map<FactoryType,AbstractFactory> factoryPrototype = new HashMap<>();
-    public static FactoryProvider instance;
+    
+    private static FactoryProvider instance;
 
     private FactoryProvider()
     {
@@ -27,7 +28,8 @@ public class FactoryProvider{
         return instance.factoryPrototype.get(factoryType);
     }
 
-    private void createPrototypeMap(){
+    private void createPrototypeMap()
+    {
         factoryPrototype.put(FactoryType.ENTITY,EntityFactory.getInstance());
     }
 }

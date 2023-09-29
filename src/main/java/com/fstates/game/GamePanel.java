@@ -3,12 +3,17 @@ package com.fstates.game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.plaf.DimensionUIResource;
 
-import com.fstates.library.Direction;
-import com.fstates.library.KeyHandler;
+import com.fstates.library.factory.EntityFactory;
+import com.fstates.library.factory.FactoryProvider;
+import com.fstates.library.factory.FactoryType;
+import com.fstates.object.entity.Enemy;
+import com.fstates.object.entity.EntityType;
 import com.fstates.object.entity.Player;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -17,7 +22,8 @@ public class GamePanel extends JPanel implements Runnable{
     private final int originalTileSize  = 16; // 16x16
     private final int scale             = 2;
 
-    private final int tileSize          = originalTileSize * scale; // 32x32 tile
+    public final int tileSize          = originalTileSize * scale; // 32x32 tile
+    
     private int maxScreenCol            = 42;
     private int maxScreenRow            = 24;
     private final int screenWidth       = tileSize * maxScreenCol; // 1280 pixels
@@ -29,10 +35,14 @@ public class GamePanel extends JPanel implements Runnable{
     int FPS = 60;
 
     //configurações do player
-    Player player                       = Player.getInstance("ykky",640,310);
+    Player player                       = Player.getInstance("ykky",this,640,310);
 
-    // configuração dos comandos
-    //KeyHandler keyHandler               = new KeyHandler();
+    //fábrica para produzir entities
+    EntityFactory entityFactory = (EntityFactory) FactoryProvider.getInstance().
+                                    getFactory(FactoryType.ENTITY);
+
+    //configurações dos inimigos
+    List<Enemy> enemies = new ArrayList<>();
 
     public GamePanel(){
 
@@ -41,16 +51,26 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(player.getKeyHandler());
         this.setFocusable(true);
+
+//        enemies.add((Enemy)entityFactory.create(EntityType.ENEMY));
+//        enemies.add((Enemy)entityFactory.create(EntityType.ENEMY));
+//        enemies.add((Enemy)entityFactory.create(EntityType.ENEMY));
+//        enemies.add((Enemy)entityFactory.create(EntityType.ENEMY));
+//        enemies.add((Enemy)entityFactory.create(EntityType.ENEMY));
+//        enemies.add((Enemy)entityFactory.create(EntityType.ENEMY));
+//        enemies.add((Enemy)entityFactory.create(EntityType.ENEMY));
+//        enemies.add((Enemy)entityFactory.create(EntityType.ENEMY));
         
     }
     
-    public void startGameThread(){
+    public void startGameThread()
+    {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
-    public void update(){
-     
+    public void update()
+    {
        player.update();
     }
 
@@ -58,28 +78,26 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
-
-        g2.setColor(Color.WHITE);
-        g2.fillRect(player.getX(), player.getY(), tileSize, tileSize);
+        player.draw(g2);
         g2.dispose();
     }
 
     @Override
     public void run() {
 
-        double drawnInteval = 1000000000/FPS; // 0.01666666 seconds
-        double delta        = 0;
-        double lastTime     = System.nanoTime();
-        double currentTime;
-        long timer          = 0;
-        int drawCount       = 0;
+        double  drawnInterval = (double) 1000000000 / FPS; // 0.01666666 seconds
+        double  delta        = 0;
+        double  lastTime     = System.nanoTime();
+        double  currentTime;
+        long    timer        = 0;
+        int     drawCount    = 0;
 
         while(gameThread != null){
 
             currentTime = System.nanoTime();
 
-            delta += (currentTime-lastTime) / drawnInteval;
-            timer += (currentTime - lastTime);
+            delta += (currentTime - lastTime) / drawnInterval;
+            timer += (long) (currentTime - lastTime);
             lastTime = currentTime;
 
 
@@ -87,12 +105,12 @@ public class GamePanel extends JPanel implements Runnable{
             
                 // Atualiza a informação, como por exemplo as coordenadas do player
                 update();
-                //System.out.println(player);
-                // Redesenha a tela com a informação atualizada
+               
+                //Redesenha a tela com a informação atualizada
                 repaint();
                 delta--;
                 drawCount++;
-            }
+           }
 
             if(timer >= 1000000000){
                 // System.out.println("FPS: " + drawCount);
