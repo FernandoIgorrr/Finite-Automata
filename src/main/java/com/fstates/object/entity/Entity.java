@@ -1,7 +1,9 @@
 package com.fstates.object.entity;
 
+import com.fstates.automata.NoAnimation;
 import com.fstates.automata.State;
 import com.fstates.library.Coordinates;
+import com.fstates.library.Direction;
 import com.fstates.library.Status;
 import com.fstates.object.GameObject;
 
@@ -34,6 +36,7 @@ public abstract class Entity implements GameObject
     protected Entity(EntityType  entityType)
     {
         this.entityType     = entityType;
+        status              = new Status();
     }
 
     protected Entity(EntityType  entityType, double speed)
@@ -48,7 +51,7 @@ public abstract class Entity implements GameObject
         this.coordinates    = coordinates;
     }
 
-    protected Entity(EntityType  entityType, State<Entity> state, Coordinates coordinates, double speed){
+    protected Entity(EntityType  entityType, State state, Coordinates coordinates, double speed){
         this(entityType,coordinates,speed);
         this.state = state;
     }
@@ -143,6 +146,44 @@ public abstract class Entity implements GameObject
      * Método raíz para chamar outros métodos que modificarão
      * as propriedades do objeto.
      */
+
+    public void move(Direction direction){
+        switch(direction){
+            case NORTH:
+                setY(getY()-(int)speed);
+                break;
+            case SOUTH:
+                setY(getY()+(int)speed);
+                break;
+            case EAST:
+                setX(getX()+(int)speed);
+                break;
+            case WEST:
+                setX(getX()-(int)speed);
+                break;
+            
+            //Duas dieções ao mesmo tempos
+
+            case NORTH_EAST:
+                setY(getY()-(int)speed);
+                setX(getX()+(int)speed);
+                break;
+            case NORTH_WEST:
+                setY(getY()-(int)speed);
+                setX(getX()-(int)speed);
+                break;
+            case SOUTH_EAST:
+                setY(getY()+(int)speed);
+                setX(getX()+(int)speed);
+                break;
+            case SOUTH_WEST:
+                setY(getY()+(int)speed);
+                setX(getX()-(int)speed);
+                break;
+        }
+    }
+
+
     public void update()
     {
         this.state.execute(this);
@@ -176,10 +217,12 @@ public abstract class Entity implements GameObject
 
     @Override
     public String toString() {
-        return "[\n" + 
+        return 
+        
         "\tEntity type\t= "   + entityType    + "\n" +
-        "\tCoordinate\t= "      + coordinates   + "\n" +
-        "\tSpeed\t\t= "           + speed         + "\n" +
-        "\tState\t\t= "           + state         + "\n";
+        "\tCoordinate\t= "    + coordinates   + "\n" +
+        "\tSpeed\t\t= "       + speed         + "\n" +
+        "\tState\t\t= "       + state         + "\n" +
+        "\t" + status;
     }
 }

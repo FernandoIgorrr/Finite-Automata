@@ -3,5 +3,9 @@ package com.fstates.automata;
 public enum StateType {
     PATROL,
     BACK_TO_PATROL,
-    CHASE;
+    CHASE,
+    
+    
+    
+    NO_ANIMATION;
 }

@@ -22,5 +22,4 @@ public interface State<T>{
     */
     public void exit(T t);
 
-    public StateType getState();
 }

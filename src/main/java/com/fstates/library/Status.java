@@ -178,4 +178,19 @@ public class Status {
         magicalCriticalHit          += additionalMagicalCriticalHit;
     }
 
+    @Override
+    public String toString() {
+        return "Status [\n" +
+            "\t\t Health\t\t\t\t= "                 + health                + "\n" +
+            "\t\t Attack Damage\t\t\t= "          + attackDamage          + "\n" +
+            "\t\t Spell power\t\t\t= "            + spellPower            + "\n" +
+            "\t\t Armor\t\t\t\t= "                  + armor                 + "\n" +
+            "\t\t Magic Resistance\t\t= "         + magicResist           + "\n" +
+            "\t\t Crítical chance\t\t= "          + physicalCriticalHit   + "\n" +
+            "\t\t Crítical chance (magical)\t= "  + magicalCriticalHit    + "\n" +
+            "\t\t Critical Damage\t\t= "            + criticalDamage        + "\n" +
+            "\t\t Haste\t\t\t\t= "                     + haste                 + "\n" +
+            "\t\t]";
+    }
+
 }

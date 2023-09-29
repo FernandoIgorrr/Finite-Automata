@@ -1,6 +1,5 @@
 package com.fstates.object.entity;
 
-import com.fstates.automata.State;
 import com.fstates.library.Coordinates;
 
 public class Enemy extends Entity
