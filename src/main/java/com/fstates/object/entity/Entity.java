@@ -2,6 +2,7 @@ package com.fstates.object.entity;
 
 import com.fstates.automata.State;
 import com.fstates.library.Coordinates;
+import com.fstates.library.Status;
 import com.fstates.object.GameObject;
 
 
@@ -14,15 +15,12 @@ import com.fstates.object.GameObject;
 public abstract class Entity implements GameObject
 {
 
-    /**
-     * Propriedades:
-     * 
-    */
+    //Propriedades gerais:
     private final   EntityType      entityType;
     private         Coordinates     coordinates;
     private         double          speed;
-    private         State<Enemy>    state;
-
+    private         State<Entity>   state;
+    private         Status          status;
 
     /**
      * Construtores com o modificador de acesso protected
@@ -50,8 +48,14 @@ public abstract class Entity implements GameObject
         this.coordinates    = coordinates;
     }
 
-    public Entity(Entity entity)
+    protected Entity(EntityType  entityType, State<Entity> state, Coordinates coordinates, double speed){
+        this(entityType,coordinates,speed);
+        this.state = state;
+    }
+
+    protected Entity(Entity entity)
     {
+        status              = entity.getStatus();            
         coordinates         = entity.getCoordinates();
         entityType          = entity.getEntityType();
         speed               = entity.getSpeed();
@@ -121,18 +125,47 @@ public abstract class Entity implements GameObject
 
     // *****************************************************************
 
+    // Setter e Getter do atributo status
+    public Status getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(Status status)
+    {
+        this.status = status;
+    }
+    // Fim dos Setter e Getter de status
+
+    // *****************************************************************
+
     /** 
      * Método raíz para chamar outros métodos que modificarão
      * as propriedades do objeto.
      */
     public void update()
     {
-
+        this.state.execute(this);
     }
 
+    /**
+     * Método para alterar o estado da entidade baseado no padrão State Design, 
+     * onde teremos o fluxo de ações (entrada, mudança e saída) para cada
+     * estado
+    */
     public void changeState(State state)
     {
+
+        boolean  transitionStates = this.state != null && state != null;
+        
+        assert(transitionStates);
+
+        state.exit(this);
+
         this.state = state;
+
+        state.enter(this);
+
     }
 
     @Override
