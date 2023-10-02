@@ -1,6 +1,5 @@
 package com.fstates.object;
 
-import com.fstates.automata.State;
 import com.fstates.library.*;
 
 /**
@@ -16,9 +15,5 @@ public interface GameObject
 {
     
     public void update();
-    public void changeState(State state);
-
-    public Coordinates getCoordinates();
-    public int getX();
-    public int getY();
+   //public void changeState(State state);
 }

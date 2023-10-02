@@ -1,4 +1,4 @@
-package com.fstates.automata;
+package com.fstates.library;
 
 public enum ActionType
 {

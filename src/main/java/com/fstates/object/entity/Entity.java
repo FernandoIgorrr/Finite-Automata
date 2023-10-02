@@ -1,16 +1,12 @@
 package com.fstates.object.entity;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.Map;
-
-import com.fstates.automata.ActionType;
 import com.fstates.automata.State;
 import com.fstates.game.GamePanel;
-import com.fstates.library.Coordinates;
+import com.fstates.library.Area;
+import com.fstates.library.Coordinate;
 import com.fstates.library.Direction;
 import com.fstates.library.Status;
-import com.fstates.object.GameObject;
+import com.fstates.object.DrawnableGameObject;
 
 
 /**
@@ -19,19 +15,18 @@ import com.fstates.object.GameObject;
  * (nps de forma geral), qualquer coisa que se mova ou 
  * não seja estática.
 */
-public abstract class Entity implements GameObject
+public abstract class Entity extends DrawnableGameObject
 {
 
     //Propriedades gerais:
-    private final   EntityType      entityType;
-    private         Coordinates     coordinates;
-    private         double          speed;
-    private         State<Entity>   state;
-    private         Status          status;
+    private final   EntityType          entityType;
+    protected       int                 speed;
+    protected       State               state;
+    protected       Status              status;
+    protected       Direction           direction;
+    protected       Area collisionArea;
+    protected       boolean             collisionOn = false;
 
-    public          GamePanel       gamePanel;
-
-    protected Map<ActionType, BufferedImage>    actionsSprites;
 
     /**
      * Construtores com o modificador de acesso protected
@@ -44,32 +39,35 @@ public abstract class Entity implements GameObject
     */
     protected Entity(EntityType  entityType, GamePanel gamePanel)
     {
+        super(gamePanel);
+        this.collision = true;
         this.entityType     = entityType;
-        this.gamePanel      = gamePanel;
         status              = new Status();
     }
 
-    protected Entity(EntityType  entityType, GamePanel gamePanel, double speed)
+    protected Entity(EntityType  entityType, GamePanel gamePanel, int speed)
     {
         this(entityType, gamePanel);
         this.speed          = speed;
     }
-    
-    protected Entity(EntityType  entityType, GamePanel gamePanel, Coordinates coordinates, double speed)
+
+    protected Entity(EntityType  entityType, GamePanel gamePanel, Coordinate coordinate, int speed)
     {
-        this(entityType, gamePanel,speed);
-        this.coordinates    = coordinates;
+        super(gamePanel, coordinate);
+        collisionArea = new Area();
+        this.entityType = entityType;
+        this.speed      = speed;
     }
 
-    protected Entity(EntityType  entityType, GamePanel gamePanel, State state, Coordinates coordinates, double speed){
-        this(entityType, gamePanel, coordinates,speed);
+    protected Entity(EntityType  entityType, GamePanel gamePanel, State state, Coordinate coordinate, int speed){
+        this(entityType, gamePanel, coordinate,speed);
         this.state = state;
     }
 
     protected Entity(Entity entity)
     {
         status              = entity.getStatus();            
-        coordinates         = entity.getCoordinates();
+        coordinate = entity.getCoordinates();
         entityType          = entity.getEntityType();
         speed               = entity.getSpeed();
     }
@@ -83,54 +81,15 @@ public abstract class Entity implements GameObject
         return entityType;
     }
 
-    // Setters e Getter do atributo coordinates
-    public Coordinates getCoordinates()
-    {
-        return coordinates;
-    }
-    public void setCoordinates(Coordinates coordinates)
-    {
-        this.coordinates    = coordinates;
-    }
-    public void setCoordinates(int x,int y)
-    {
-        coordinates.setPair(x, y);
-    }
-    // Fim dos Setters e Getter do atributo coordinates
-
-    // *****************************************************************
-
-    // Set e Get do atributo x do atributo coordiantes
-    public int getX()
-    {
-        return getCoordinates().getX();
-    }
-
-    public void setX(int x)
-    {
-      getCoordinates().setX(x);
-    }
-
-    // Set e Get do atributo y do atributo coordiantes
-    public int getY()
-    {
-        return getCoordinates().getY();
-    }
-    public void setY(int y)
-    {
-      getCoordinates().setY(y);
-    }
-    // Fim dos Setters e Getters dos atributos x & y do atributo coordinates
-
     // *****************************************************************
 
     // Setter e Getter do atributo speed
-    public double getSpeed()
+    public int getSpeed()
     {
         return speed;
     }
 
-    public void setSpeed(double speed)
+    public void setSpeed(int speed)
     {
         this.speed = speed;
     }
@@ -152,78 +111,107 @@ public abstract class Entity implements GameObject
 
     // *****************************************************************
 
-    //Recebe uma direção e então suas coordenadas mudam para a "direção"
-    public void move(Direction direction)
+    // Getter para direction
+    public Direction getDirection()
     {
-        switch(direction){
-            case NORTH:
-                setY(getY()-(int)speed);
-                break;
-            case SOUTH:
-                setY(getY()+(int)speed);
-                break;
-            case EAST:
-                setX(getX()+(int)speed);
-                break;
-            case WEST:
-                setX(getX()-(int)speed);
-                break;
-            
-            //Duas dieções ao mesmo tempos
+        return direction;
+    }
+    // fim do Getter do atributo direction
 
-            case NORTH_EAST:
-                setY(getY()-(int)speed);
-                setX(getX()+(int)speed);
-                break;
-            case NORTH_WEST:
-                setY(getY()-(int)speed);
-                setX(getX()-(int)speed);
-                break;
-            case SOUTH_EAST:
-                setY(getY()+(int)speed);
-                setX(getX()+(int)speed);
-                break;
-            case SOUTH_WEST:
-                setY(getY()+(int)speed);
-                setX(getX()-(int)speed);
-                break;
+    // *****************************************************************
+
+    // Setter e Getter para a propriedade collisionOn
+    public boolean isCollisionOn() {
+        return collisionOn;
+    }
+
+    public void setCollisionOn(boolean collisionOn) {
+        this.collisionOn = collisionOn;
+    }
+    // Fim do Setter e Getter da propriedade collisionOn
+
+    // *****************************************************************
+
+    //Move a entity na direção atual"
+    public void move()
+    {
+        if(direction == null){
+
+        }
+        else {
+            setCollisionArea();
+            collisionOn = false;
+            gamePanel.collisionChecker.checkTile(this);
+            if(!collisionOn)
+            {
+                switch (direction)
+                {
+                    case NORTH:
+                        setY(getY() - (int) speed);
+                        break;
+                    case SOUTH:
+                        setY(getY() + (int) speed);
+                        break;
+                    case EAST:
+                        setX(getX() + (int) speed);
+                        break;
+                    case WEST:
+                        setX(getX() - (int) speed);
+                        break;
+
+                    //Duas dieções ao mesmo tempos
+
+                    case NORTH_EAST:
+                        setY(getY() - (int) speed);
+                        setX(getX() + (int) speed);
+                        break;
+                    case NORTH_WEST:
+                        setY(getY() - (int) speed);
+                        setX(getX() - (int) speed);
+                        break;
+                    case SOUTH_EAST:
+                        setY(getY() + (int) speed);
+                        setX(getX() + (int) speed);
+                        break;
+                    case SOUTH_WEST:
+                        setY(getY() + (int) speed);
+                        setX(getX() - (int) speed);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
+
+
+    public Area getCollisionArea()
+    {
+        return collisionArea;
+    }
+
+    public void setCollisionArea()
+    {
+        collisionArea.initialX   = coordinate.getX() + 8;
+        collisionArea.initialY   = coordinate.getY() + 16;
+        collisionArea.finalX     = coordinate.getX() + gamePanel.tileSize - 8;
+        collisionArea.finalY     = coordinate.getY() + gamePanel.tileSize;
+    }
+
+
 
      /** 
      * Método raíz para chamar outros métodos que modificarão
      * as propriedades do objeto.
      */
 
-    public void update()
-    {
-        state.execute(this);
-    }
-
-    // Desenha o player na tela
-    public abstract void draw(Graphics g);
-
-    public abstract void loadSprites();
+    public abstract void update();
 
     /**
      * Método para alterar o estado da entidade baseado no padrão State Design, 
      * onde teremos o fluxo de ações (entrada, mudança e saída) para cada
      * estado
     */
-    public void changeState(State state)
-    {
-
-        boolean  transitionStates = this.state != null && state != null;
-        
-        assert(transitionStates);
-
-        state.exit(this);
-
-        this.state = state;
-
-        state.enter(this);
-
-    }
 
     @Override
     public Entity clone()
@@ -236,7 +224,7 @@ public abstract class Entity implements GameObject
         return 
         
         "\tEntity type\t= "   + entityType    + "\n" +
-        "\tCoordinate\t= "    + coordinates   + "\n" +
+        "\tCoordinate\t= "    + coordinate + "\n" +
         "\tSpeed\t\t= "       + speed         + "\n" +
         "\tState\t\t= "       + state         + "\n" +
         "\t" + status;

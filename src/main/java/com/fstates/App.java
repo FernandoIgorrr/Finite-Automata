@@ -3,8 +3,6 @@ package com.fstates;
 import javax.swing.JFrame;
 
 import com.fstates.game.GamePanel;
-import com.fstates.library.Coordinates;
-import com.fstates.object.entity.Player;
 
 public class App 
 {
@@ -17,7 +15,7 @@ public class App
 
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
+        window.setResizable(true);
         window.setTitle("whatever");
 
         GamePanel gamePanel = new GamePanel();

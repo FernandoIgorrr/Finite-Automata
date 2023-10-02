@@ -6,6 +6,6 @@ public enum StateType {
     CHASE,
     
     
-    
+    WALK,
     NO_ANIMATION;
 }
