@@ -23,6 +23,7 @@ public class Fury implements State
     }
     @Override
     public void enter(Enemy enemy) {
+        enemy.setSpeed(enemy.getSpeed() + 2);
         System.out.println("========>>> ENTER FURY***");
     }
 
@@ -33,6 +34,6 @@ public class Fury implements State
 
     @Override
     public void exit(Enemy enemy) {
-
+        enemy.setSpeed(enemy.getSpeed() - 2);
     }
 }

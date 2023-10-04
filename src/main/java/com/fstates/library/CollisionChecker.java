@@ -51,7 +51,8 @@ public class CollisionChecker
                             (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityLeftCol]) ||
                                     (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityRightCol]))
                     {
-                        entity.setCollisionOn(true);
+                        entity.getCollision().collisionOn        = true;
+                        entity.getCollision().collisionDirection = Direction.NORTH;
                     }
                     break;
 
@@ -63,7 +64,8 @@ public class CollisionChecker
                             (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityLeftCol]) ||
                                     (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityRightCol]))
                     {
-                        entity.setCollisionOn(true);
+                        entity.getCollision().collisionOn = true;
+                        entity.getCollision().collisionDirection = Direction.SOUTH;
                     }
                     break;
                 case EAST:
@@ -74,30 +76,36 @@ public class CollisionChecker
                             (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityRightCol]) ||
                                     (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityRightCol]))
                     {
-                        entity.setCollisionOn(true);
+                        entity.getCollision().collisionOn = true;
+                        entity.getCollision().collisionDirection = Direction.EAST;
                     }
                     break;
                 case WEST:
 
                     entityLeftCol    = (int)((double)entity.getCollisionArea().initialX - entity.getSpeed())/gamePanel.tileSize;
 
+
                     if (
                             (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityLeftCol]) ||
                                     (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityLeftCol]))
                     {
-                        entity.setCollisionOn(true);
+                        entity.getCollision().collisionOn = true;
+                        entity.getCollision().collisionDirection = Direction.WEST;
+
                     }
                     break;
 
                 case NORTH_EAST:
 
                     entityTopRow    = (int)((double)entity.getCollisionArea().initialY - entity.getSpeed()) / gamePanel.tileSize;
+                    entityRightCol    = (int)((double)entity.getCollisionArea().finalX + entity.getSpeed())/gamePanel.tileSize;
+
 
                     if(((boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityRightCol])))
                     {
-                        entity.setCollisionOn(true);
+                        entity.getCollision().collisionOn = true;
+                        entity.getCollision().collisionDirection = Direction.NORTH_EAST;
                     }
-
 
                     break;
 
@@ -109,35 +117,36 @@ public class CollisionChecker
 
                     if( ((boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityLeftCol])))
                     {
-                        entity.setCollisionOn(true);
+                        entity.getCollision().collisionOn = true;
+                        entity.getCollision().collisionDirection = Direction.NORTH_WEST;
                     }
-
                     break;
 
                 case SOUTH_EAST:
 
-                    entityBottomRow    = (int)((double)entity.getCollisionArea().finalY + entity.getSpeed())/gamePanel.tileSize;
+                    entityBottomRow   = (int)((double)entity.getCollisionArea().finalY + entity.getSpeed())/gamePanel.tileSize;
                     entityRightCol    = (int)((double)entity.getCollisionArea().finalX + entity.getSpeed())/gamePanel.tileSize;
 
                     if((boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityRightCol]))
                     {
-                        entity.setCollisionOn(true);
+                        entity.getCollision().collisionOn = true;
+                        entity.getCollision().collisionDirection = Direction.SOUTH_EAST;
                     }
                     break;
 
                 case SOUTH_WEST:
 
-                    entityBottomRow    = (int)((double)entity.getCollisionArea().finalY - entity.getSpeed())/gamePanel.tileSize;
+                    entityBottomRow  = (int)((double)entity.getCollisionArea().finalY + entity.getSpeed())/gamePanel.tileSize;
                     entityLeftCol    = (int)((double)entity.getCollisionArea().initialX - entity.getSpeed())/gamePanel.tileSize;
 
                     if((boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityLeftCol]))
                     {
-                        entity.setCollisionOn(true);
+                        //entity.setDirection(Direction.WEST);
+                        entity.getCollision().collisionOn = true;
+                        entity.getCollision().collisionDirection = Direction.SOUTH_WEST;
                     }
                     break;
-
             }
         }
     }
-
 }

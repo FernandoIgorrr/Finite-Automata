@@ -2,10 +2,7 @@ package com.fstates.object.entity;
 
 import com.fstates.automata.State;
 import com.fstates.game.GamePanel;
-import com.fstates.library.Area;
-import com.fstates.library.Coordinate;
-import com.fstates.library.Direction;
-import com.fstates.library.Status;
+import com.fstates.library.*;
 import com.fstates.object.DrawnableGameObject;
 
 
@@ -24,8 +21,14 @@ public abstract class Entity extends DrawnableGameObject
     protected       State               state;
     protected       Status              status;
     protected       Direction           direction;
-    protected       Area collisionArea;
-    protected       boolean             collisionOn = false;
+    protected       Area                collisionArea;
+
+    public Collision getCollision() {
+        return collision;
+    }
+
+    protected       Collision           collision = new Collision(false,null);
+    protected       int                 speedDiagonal;
 
 
     /**
@@ -40,7 +43,7 @@ public abstract class Entity extends DrawnableGameObject
     protected Entity(EntityType  entityType, GamePanel gamePanel)
     {
         super(gamePanel);
-        this.collision = true;
+        this.collision.collisionOn = true;
         this.entityType     = entityType;
         status              = new Status();
     }
@@ -49,14 +52,17 @@ public abstract class Entity extends DrawnableGameObject
     {
         this(entityType, gamePanel);
         this.speed          = speed;
+        speedDiagonal = (int) Math.ceil(((double)speed)/2);
     }
 
     protected Entity(EntityType  entityType, GamePanel gamePanel, Coordinate coordinate, int speed)
     {
         super(gamePanel, coordinate);
-        collisionArea = new Area();
+        collisionArea   = new Area();
         this.entityType = entityType;
         this.speed      = speed;
+        speedDiagonal = (int) Math.ceil(((double)speed)/2);
+
     }
 
     protected Entity(EntityType  entityType, GamePanel gamePanel, State state, Coordinate coordinate, int speed){
@@ -67,13 +73,19 @@ public abstract class Entity extends DrawnableGameObject
     protected Entity(Entity entity)
     {
         status              = entity.getStatus();            
-        coordinate = entity.getCoordinates();
+        coordinate          = entity.getCoordinates();
         entityType          = entity.getEntityType();
         speed               = entity.getSpeed();
     }
     // Fim dos construtores
 
     // *****************************************************************
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    //******************************************************************
 
     // Get do atributo entetyType
     public EntityType getEntityType()
@@ -91,7 +103,9 @@ public abstract class Entity extends DrawnableGameObject
 
     public void setSpeed(int speed)
     {
+
         this.speed = speed;
+        speedDiagonal = (int) Math.ceil(((double)speed)/2);
     }
     // Fim do Setter e Getter do atribudo speed
 
@@ -121,12 +135,12 @@ public abstract class Entity extends DrawnableGameObject
     // *****************************************************************
 
     // Setter e Getter para a propriedade collisionOn
-    public boolean isCollisionOn() {
-        return collisionOn;
+    public Collision isCollisionOn() {
+        return collision;
     }
 
-    public void setCollisionOn(boolean collisionOn) {
-        this.collisionOn = collisionOn;
+    public void setCollision(Collision collision) {
+        this.collision = collision;
     }
     // Fim do Setter e Getter da propriedade collisionOn
 
@@ -140,12 +154,11 @@ public abstract class Entity extends DrawnableGameObject
         }
         else {
             setCollisionArea();
-            collisionOn = false;
+            collision.collisionOn = false;
             gamePanel.collisionChecker.checkTile(this);
-            if(!collisionOn)
-            {
-                switch (direction)
-                {
+
+            if(!collision.collisionOn) {
+                switch (direction) {
                     case NORTH:
                         setY(getY() - (int) speed);
                         break;
@@ -162,20 +175,20 @@ public abstract class Entity extends DrawnableGameObject
                     //Duas dieções ao mesmo tempos
 
                     case NORTH_EAST:
-                        setY(getY() - (int) speed);
-                        setX(getX() + (int) speed);
+                        setY(getY() - speedDiagonal);
+                        setX(getX() + speedDiagonal);
                         break;
                     case NORTH_WEST:
-                        setY(getY() - (int) speed);
-                        setX(getX() - (int) speed);
+                        setY(getY() - speedDiagonal);
+                        setX(getX() - speedDiagonal);
                         break;
                     case SOUTH_EAST:
-                        setY(getY() + (int) speed);
-                        setX(getX() + (int) speed);
+                        setY(getY() + speedDiagonal);
+                        setX(getX() + speedDiagonal);
                         break;
                     case SOUTH_WEST:
-                        setY(getY() + (int) speed);
-                        setX(getX() - (int) speed);
+                        setY(getY() + speedDiagonal);
+                        setX(getX() - speedDiagonal);
                         break;
                     default:
                         break;

@@ -114,6 +114,8 @@ public class GamePanel extends JPanel implements Runnable{
                 }
                 else{
                     itens.add(new Coin(this,subTileMap.getCenter(),subTileMap.getNum()));
+                    //itens.add(new Boots(this,subTileMap.getCenter(),subTileMap.getNum()));
+
                 }
                 enemies.add(enemy);
             }
@@ -135,6 +137,10 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();
     }
 
+    public void restartGame(){
+
+    }
+
     public void update()
     {
         for (Enemy enemy : enemies) {
@@ -144,10 +150,9 @@ public class GamePanel extends JPanel implements Runnable{
             {
                 gameThread = null;
                 JOptionPane.showMessageDialog(null,"VOCÊ PERDEU!!!");
-
             }
         }
-        //enemies.getFirst().update();
+        enemies.getFirst().update();
 
 
         Item itemToRemove = null;

@@ -38,11 +38,12 @@ public class Player extends Entity
 
     private Player(String name, GamePanel gamePanel, Coordinate coordinate)
     {
-        super(EntityType.PLAYER, gamePanel, null, coordinate, 4);
+        super(EntityType.PLAYER, gamePanel, null, coordinate, 5);
         this.name       = name;
         keyHandler      = new KeyHandler();
         //loadSprites();
         currentSprite   = actionsSprites.get(ActionType.WALK_SOUTH_1);
+        System.out.println("VELOCIDADE: " + speedDiagonal);
     }
 
     public static Player getInstance()
@@ -97,7 +98,7 @@ public class Player extends Entity
     {
         if(item instanceof Boots)
         {
-            speed++;
+            setSpeed(getSpeed() + 1);
         }
         else if(item instanceof Coin)
         {
