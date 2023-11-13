@@ -15,22 +15,9 @@ public class Wall extends Tile {
     {
         super(gamePanel);
         collision =   true;
-    }
+        tileType = TileType.WALL;
 
-    @Override
-    protected void drawPhase(Graphics2D g) {
-        for(Coordinate c : coordinates)
-        {
-            g.drawImage(currentSprite, c.getX(), c.getY(), gamePanel.tileSize, gamePanel.tileSize, null);
-        }
     }
-
-    @Override
-    public void draw(Graphics2D g)
-    {
-        drawPhase(g);
-    }
-
 
     @Override
     public void loadSprites()
@@ -51,19 +38,11 @@ public class Wall extends Tile {
     }
 
     @Override
-    protected void fillCoordinates() {
-        coordinates = new ArrayList<>();
-
-        for (int i = 0; i < gamePanel.maxScreenRow; i++)
-        {
-            for(int j = 0; j < gamePanel.maxScreenCol; j++)
-            {
-                if(i == 0 || j == 0 || i >= gamePanel.maxScreenRow -1 || j >= gamePanel.maxScreenCol - 1)
-                {
-                    coordinates.add(tileToCoordinate(i,j));
-                    gamePanel.tileMap.getMap()[i][j] = 'w';
-                }
-            }
-        }
+    public Tile clone()
+    {
+        Wall w = new Wall(gamePanel);
+        w.setCurrentSprite(currentSprite);
+        w.setCollide(collision);
+        return w;
     }
 }

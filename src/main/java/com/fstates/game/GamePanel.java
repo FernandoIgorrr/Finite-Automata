@@ -3,6 +3,7 @@ package com.fstates.game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -26,6 +27,7 @@ import com.fstates.object.item.Item;
 import com.fstates.object.map.SubTileMap;
 import com.fstates.object.map.TileMap;
 import com.fstates.object.tile.Grass;
+import com.fstates.object.tile.TileManager;
 import com.fstates.object.tile.Wall;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -46,9 +48,6 @@ public class GamePanel extends JPanel implements Runnable{
 
     int FPS = 60;
 
-    //Mapa de tiles
-    public TileMap tileMap = new TileMap(this);
-
     //configurações do player
     Player player                       = Player.getInstance("ykky",this,640,310);
 
@@ -59,10 +58,7 @@ public class GamePanel extends JPanel implements Runnable{
     Deque<Enemy> enemies;
 
     //configuração dos tiles
-    //wall
-    Wall wall = new Wall(this);
-    Grass grass = new Grass(this);
-
+    public TileManager tileManager = new TileManager(this);
     //configuração de colisao
     public CollisionChecker collisionChecker = new CollisionChecker(this);
 
@@ -71,20 +67,25 @@ public class GamePanel extends JPanel implements Runnable{
     public List<Item> itens = new ArrayList<>();
 
 
-    public GamePanel()
-    {
+    public GamePanel(){
         this.setPreferredSize(new DimensionUIResource(screenWidth, screenHight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(player.getKeyHandler());
         this.setFocusable(true);
 
-        enemies = new ArrayDeque<>();
+        try {
+            tileManager.loadMap("assets/maps/2map.map");
+        }catch (IOException e){
+            System.out.println("ERRO AO LER O MAPA:\n"+e.getMessage());
+        }
+
+        /*enemies = new ArrayDeque<>();
         for(SubTileMap subTileMap: tileMap.getSubTileMaps())
         {
             if(subTileMap.getNum() != 4)
             {
-                System.out.println("NUM: " + subTileMap.getNum() + " | CENTER: " + subTileMap.getCenter());
+                //System.out.println("NUM: " + subTileMap.getNum() + " | CENTER: " + subTileMap.getCenter());
                 Enemy enemy = (Enemy) entityFactory.create(EntityType.ENEMY);
                 Coordinate coord;
                 if(subTileMap.getNum() < 5)
@@ -98,11 +99,11 @@ public class GamePanel extends JPanel implements Runnable{
                 }
                 else
                 {
-
                     coord = new Coordinate(subTileMap.getCenter().getX(), subTileMap.getCenter().getY()-70);
                 }
                 enemy.setCoordinates(coord);
                 enemy.setPatrolCoord(subTileMap.getCenter());
+
                 if(subTileMap.getNum() >= 6){
                     enemy.limitPatrol.finalY = enemy.limitPatrol.finalY - 30;
                 }
@@ -110,16 +111,15 @@ public class GamePanel extends JPanel implements Runnable{
 
                 if(subTileMap.getNum() == 0 ||subTileMap.getNum() == 8){
                     itens.add(new Boots(this,subTileMap.getCenter(),subTileMap.getNum()));
-
                 }
                 else{
                     itens.add(new Coin(this,subTileMap.getCenter(),subTileMap.getNum()));
                     //itens.add(new Boots(this,subTileMap.getCenter(),subTileMap.getNum()));
-
                 }
+                if(subTileMap.getNum() == 1)
                 enemies.add(enemy);
             }
-        }
+        }*/
     }
 
     public boolean checkIteminSubMap(int num){
@@ -143,7 +143,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void update()
     {
-        for (Enemy enemy : enemies) {
+      /*  for (Enemy enemy : enemies) {
             //System.out.println("********* " + enemy.getCoordinates());
             enemy.update();
             if(enemy.collided(Player.getInstance()))
@@ -151,11 +151,11 @@ public class GamePanel extends JPanel implements Runnable{
                 gameThread = null;
                 JOptionPane.showMessageDialog(null,"VOCÊ PERDEU!!!");
             }
-        }
-        enemies.getFirst().update();
+        }*/
+        //enemies.getFirst().update();
 
 
-        Item itemToRemove = null;
+     /*   Item itemToRemove = null;
         for (Item item : itens) {
             //System.out.println("********* " + enemy.getCoordinates());
             item.update();
@@ -163,43 +163,34 @@ public class GamePanel extends JPanel implements Runnable{
                 Player.getInstance().powerUp(item);
                 itemToRemove = item;
             }
-        }
+        }*/
 
-        itens.remove(itemToRemove);
+      //  itens.remove(itemToRemove);
+
         player.update();
 
-        if(itens.isEmpty()){
+       /* if(itens.isEmpty()){
             gameThread = null;
             JOptionPane.showMessageDialog(null,"VOCÊ VENCEU!!!");
-        }
+        }*/
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
-        grass.draw(g2);
-        wall.draw(g2);
-//        for (int i = 0; i < maxScreenRow; i++) {
-//            for (int j = 0; j < maxScreenCol; j++) {
-//                g2.setColor(Color.BLACK);
-//                g2.fillRect(j * tileSize,i * tileSize,tileSize,2);
-//                g2.fillRect(j * tileSize,i * tileSize,2, tileSize);
-//            }
-//        }
-//
+
+       /* //desenha os inimigos
         for (Enemy enemy : enemies) {
             enemy.draw(g2);
         }
         //enemies.getFirst().draw(g2);
 
-
+        //desenha os itens
         for (Item item : itens) {
             item.draw(g2);
-        }
-
-        //System.out.println(enemies.getFirst().getCoordinates());
-
+        }*/
+        tileManager.drawnTiles(g2);
         player.draw(g2);
 
         g2.dispose();

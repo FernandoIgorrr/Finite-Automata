@@ -2,21 +2,21 @@ package com.fstates.automata;
 
 import com.fstates.object.entity.Enemy;
 
-public class BackPatrol implements State
+public class BackToPatrol implements State
 {
 
-    private static BackPatrol instance;
+    private static BackToPatrol instance;
 
-    private BackPatrol()
+    private BackToPatrol()
     {
 
     }
 
-    public static BackPatrol getInstance()
+    public static BackToPatrol getInstance()
     {
         if(instance == null)
         {
-            instance = new BackPatrol();
+            instance = new BackToPatrol();
         }
 
         return instance;

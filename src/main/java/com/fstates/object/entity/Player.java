@@ -122,7 +122,7 @@ public class Player extends Entity
         }
     }
 
-    @Override
+ /*   @Override
     public void draw(Graphics2D g)
     {
 //        g.setColor(Color.WHITE);
@@ -130,7 +130,7 @@ public class Player extends Entity
         g.drawImage(currentSprite, getX(), getY(), gamePanel.tileSize, gamePanel.tileSize, null);
 //        g.setColor(Color.BLACK);
 //       g.fillRect(colisionArea.initialX,colisionArea.initialY, gamePanel.tileSize - 7, gamePanel.tileSize - 6);
-    }
+    }*/
 
     @Override
     public void loadSprites()

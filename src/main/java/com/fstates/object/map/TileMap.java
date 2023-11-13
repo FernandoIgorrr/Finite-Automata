@@ -5,6 +5,7 @@ import com.fstates.library.Area;
 import com.fstates.library.Coordinate;
 import com.fstates.object.GameObject;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class TileMap implements GameObject {
 
-    private char[][] map;
+    private Character[][] map;
     private List<SubTileMap> subTileMaps;
 
     private Map<Character,Boolean> tileColision;
@@ -20,14 +21,14 @@ public class TileMap implements GameObject {
     public TileMap(GamePanel gamePanel)
     {
         tileColision = new HashMap<>();
-        tileColision.put('w',true);
-        tileColision.put('g',false);
-        map = new char[gamePanel.maxScreenRow][gamePanel.maxScreenCol];
+        tileColision.put('W',true);
+        tileColision.put('G',false);
+        map = new Character[gamePanel.maxScreenRow][gamePanel.maxScreenCol];
 
         subMapsGenerator(gamePanel.screenWidth, gamePanel.screenHight);
     }
 
-    public char[][] getMap(){
+    public Character[][] getMap(){
         return map;
     }
 
@@ -40,6 +41,13 @@ public class TileMap implements GameObject {
     {
         return tileColision;
     }
+
+    @Override
+    public void draw(Graphics2D g)
+    {
+
+    }
+
     @Override
     public void update() {
 

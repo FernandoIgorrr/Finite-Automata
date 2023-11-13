@@ -8,9 +8,10 @@ import java.awt.*;
 import java.util.Map;
 
 public abstract  class DrawnableGameObject implements GameObject{
-    public GamePanel gamePanel;
-    protected Coordinate coordinate;
-    protected Map<ActionType, Image> actionsSprites;
+    public          GamePanel           gamePanel;
+
+    protected       Coordinate          coordinate;
+    protected Map<ActionType, Image>    actionsSprites;
     protected       Image               currentSprite;
     protected       int                 spriteCount = 0;
     protected       int                 spriteNum   = 1;
@@ -49,7 +50,6 @@ public abstract  class DrawnableGameObject implements GameObject{
     }
     public void setCoordinates(int x,int y)
     {
-
         coordinate.setPair(x, y);
     }
     // Fim dos Setters e Getter do atributo coordinates
@@ -79,6 +79,7 @@ public abstract  class DrawnableGameObject implements GameObject{
     // *****************************************************************
 
     // Transforma a row e a column da matriz de tiles em coordenadas
+
     public Coordinate tileToCoordinate(int row, int column)
     {
         return new Coordinate(column * gamePanel.tileSize, row * gamePanel.tileSize);
@@ -86,11 +87,24 @@ public abstract  class DrawnableGameObject implements GameObject{
     public Coordinate CoordinateToTile(int x,int y)
     {
         return new Coordinate(
-                x/ gamePanel.tileSize,
-                y/ gamePanel.tileSize
+                x / gamePanel.tileSize,
+                y / gamePanel.tileSize
         );
     }
     // Desenha a entity na tela
-    public abstract void draw(Graphics2D g);
+    public void draw(Graphics2D g)
+    {
+        g.drawImage(currentSprite, getX(), getY(), gamePanel.tileSize, gamePanel.tileSize, null);
+    }
     public abstract void loadSprites();
+
+    public boolean collide()
+    {
+        return collision;
+    }
+
+    public void collideOff()
+    {
+        collision = false;
+    }
 }

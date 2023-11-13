@@ -4,33 +4,41 @@ import com.fstates.game.GamePanel;
 import com.fstates.library.Area;
 import com.fstates.library.Coordinate;
 import com.fstates.object.DrawnableGameObject;
+import com.fstates.object.Place;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
-public abstract class Tile extends DrawnableGameObject {
+public abstract class Tile extends DrawnableGameObject
+{
+    protected Area colisionArea;
+    protected final Place PLACE = Place.STANDARD;
 
-    //protected Area colisionArea;
-    protected List<Coordinate> coordinates;
-    protected List<Area> collisionsArea;
+    public TileType tileType;
+
+    protected Coordinate coordinate;
     protected Tile(GamePanel gamePanel){
         super(gamePanel);
-        fillCoordinates();
     }
 
-    protected abstract void drawPhase(Graphics2D g);
-    protected abstract void fillCoordinates();
-
-    protected void fillColisionArea()
+    public Tile clone()
     {
-        collisionsArea = new ArrayList<>();
-        for (Coordinate coordinate: coordinates) {
-            collisionsArea.add(new Area( coordinate.getX(),
-                                        coordinate.getY(),
-                                    coordinate.getX() + gamePanel.tileSize,
-                                    coordinate.getY() + gamePanel.tileSize));
-        }
+        return null;
     }
 
+    public void setCurrentSprite(String path) throws IOException {
+        currentSprite = ImageIO.read(new File(path));
+    }
+
+    public void setCurrentSprite(Image sprite)
+    {
+        currentSprite = sprite;
+    }
+
+    public void setCollide(Boolean collision)
+    {
+        this.collision = collision;
+    }
 }

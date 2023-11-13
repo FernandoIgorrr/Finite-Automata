@@ -23,7 +23,7 @@ public class Chase implements State{
     @Override
     public void enter(Enemy enemy)
     {
-        System.out.println("========>>> ENTER CHASE***");
+        System.out.println("========>>>" + enemy.hashCode() + " ENTER CHASE***");
 
     }
 
@@ -37,7 +37,7 @@ public class Chase implements State{
         }
         if(!enemy.nearbyPlayer())
         {
-            enemy.changeState(BackPatrol.getInstance());
+            enemy.changeState(BackToPatrol.getInstance());
         }
         enemy.chasePlayer();
     }
@@ -45,7 +45,7 @@ public class Chase implements State{
     @Override
     public void exit(Enemy enemy)
     {
-        System.out.println("========>>> EXITE CHASE***");
+        System.out.println("========>>>" + enemy.hashCode() + " EXITE CHASE***");
 
     }
 }

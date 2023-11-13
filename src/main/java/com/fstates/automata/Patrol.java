@@ -24,7 +24,7 @@ public class Patrol implements State{
 
     @Override
     public void enter(Enemy enemy) {
-        System.out.println("========>>> ENTER PATROL***");
+        System.out.println("========>>>" + enemy.hashCode() + " ENTER PATROL***");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Patrol implements State{
 
     @Override
     public void exit(Enemy enemy) {
-        System.out.println("========>>> EXIT PATROL***");
+        System.out.println("========>>>" + enemy.hashCode() + " EXIT PATROL***");
 
     }
 }

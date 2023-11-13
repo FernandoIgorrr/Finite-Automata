@@ -59,6 +59,7 @@ public abstract class Entity extends DrawnableGameObject
     {
         super(gamePanel, coordinate);
         collisionArea   = new Area();
+        //setCollisionArea();
         this.entityType = entityType;
         this.speed      = speed;
         speedDiagonal = (int) Math.ceil(((double)speed)/2);
@@ -67,6 +68,7 @@ public abstract class Entity extends DrawnableGameObject
 
     protected Entity(EntityType  entityType, GamePanel gamePanel, State state, Coordinate coordinate, int speed){
         this(entityType, gamePanel, coordinate,speed);
+        setCollisionArea();
         this.state = state;
     }
 

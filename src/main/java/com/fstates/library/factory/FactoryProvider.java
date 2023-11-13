@@ -31,5 +31,6 @@ public class FactoryProvider{
     private void createPrototypeMap()
     {
         factoryPrototype.put(FactoryType.ENTITY,EntityFactory.getInstance());
+        factoryPrototype.put(FactoryType.TILE,TileFactory.getInstance());
     }
 }

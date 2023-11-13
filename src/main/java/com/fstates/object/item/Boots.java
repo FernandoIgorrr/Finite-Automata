@@ -36,14 +36,4 @@ public class Boots extends Item{
     public void update() {
 
     }
-
-    @Override
-    protected void drawPhase(Graphics2D g) {
-
-    }
-
-    @Override
-    protected void fillCoordinates() {
-
-    }
 }

@@ -41,7 +41,14 @@ public class Enemy extends Entity
         //setCollisionArea();
     }
 
-    public void checkBound(){
+    public void setSprite(Image sprite)
+    {
+        //System.out.println("MUDOU SPRITE PARA: " + sprite.getSource());
+        currentSprite = sprite;
+    }
+
+    public void checkBound()
+    {
 
         if(getX() <= limitPatrol.initialX)
         {
@@ -74,18 +81,24 @@ public class Enemy extends Entity
         {
             case NORTH:
                 if (spriteNum == 1) {
-                    currentSprite = actionsSprites.get(ActionType.WALK_NORTH_1);
+                    setSprite(actionsSprites.get(ActionType.WALK_NORTH_1));
                 }
                 if (spriteNum == 2) {
-                    currentSprite = actionsSprites.get(ActionType.WALK_NORTH_2);
+                    //currentSprite = actionsSprites.get(ActionType.WALK_NORTH_2);
+                    setSprite( actionsSprites.get(ActionType.WALK_NORTH_2));
+
                 }
                 break;
             case SOUTH:
                 if (spriteNum == 1) {
-                    currentSprite = actionsSprites.get(ActionType.WALK_SOUTH_1);
+                    //currentSprite = actionsSprites.get(ActionType.WALK_SOUTH_1);
+                    setSprite( actionsSprites.get(ActionType.WALK_SOUTH_1));
+
                 }
                 if (spriteNum == 2) {
-                    currentSprite = actionsSprites.get(ActionType.WALK_SOUTH_2);
+                   // currentSprite = actionsSprites.get(ActionType.WALK_SOUTH_2);
+                    setSprite( actionsSprites.get(ActionType.WALK_SOUTH_2));
+
                 }
                 break;
             case EAST:
@@ -127,45 +140,49 @@ public class Enemy extends Entity
         move();
         changeAnimation();
 
-//        if(getX() < Player.getInstance().getX() && getY() < getPatrolCoordinates().getY())
-//        {
-//            direction = Direction.SOUTH_EAST;
-//        }
-//
-//        else if(getX() > Player.getInstance().getX() && getY() < getPatrolCoordinates().getY())
-//        {
-//            direction = Direction.SOUTH_WEST;
-//        }
-//
-//        else if(getX() < Player.getInstance().getX() && getY() > getPatrolCoordinates().getY())
-//        {
-//            direction = Direction.NORTH_EAST;
-//        }
-//
-//        else if(getX() > Player.getInstance().getX() && getY() > getPatrolCoordinates().getY())
-//        {
-//            direction = Direction.NORTH_EAST;
-//        }
+        if(getX() <= getPatrolCoordinates().getX() && getY() <= getPatrolCoordinates().getY())
+        {
+            direction = Direction.SOUTH_EAST;
+        }
+
+        else if(getX() >= getPatrolCoordinates().getX() && getY() <= getPatrolCoordinates().getY())
+        {
+            direction = Direction.SOUTH_WEST;
+        }
+
+        else  if(getX() <= getPatrolCoordinates().getX() && getY() >= getPatrolCoordinates().getY())
+        {
+
+            direction = Direction.NORTH_EAST;
+        }
+
+        else if(getX() >= getPatrolCoordinates().getX() && getY() >= getPatrolCoordinates().getY())
+        {
+            direction = Direction.NORTH_WEST;
+        }
 
         //*********************************************************************************************************
 
-        if(getX() < getPatrolCoordinates().getX())
+        else  if(getX() <= getPatrolCoordinates().getX())
         {
             direction = Direction.EAST;
         }
-        else if(getX() > getPatrolCoordinates().getX())
+        else  if(getX() >= getPatrolCoordinates().getX())
         {
             direction = Direction.WEST;
         }
-        else if(getY() < getPatrolCoordinates().getY())
+        else if(getY() <= getPatrolCoordinates().getY())
         {
             direction = Direction.SOUTH;
         }
-        else if(getY() > getPatrolCoordinates().getY())
+        else  if(getY() >= getPatrolCoordinates().getY())
         {
             direction = Direction.NORTH;
         }
+        //System.out.println("Coord: " + getCoordinates() + "\n PCoord" + getPatrolCoordinates());
     }
+
+
 
     public void changeState(State state)
     {
@@ -185,23 +202,22 @@ public class Enemy extends Entity
         move();
         changeAnimation();
 
-        if(getX() <= Player.getInstance().getX() && getY() <= Player.getInstance().getY())
+        if(getX() < Player.getInstance().getX() && getY() < Player.getInstance().getY())
         {
             direction = Direction.SOUTH_EAST;
         }
 
-         else if(getX() >= Player.getInstance().getX() && getY() <= Player.getInstance().getY())
+        else if(getX() > Player.getInstance().getX() && getY() < Player.getInstance().getY())
         {
             direction = Direction.SOUTH_WEST;
         }
 
-        else  if(getX() <= Player.getInstance().getX() && getY() >= Player.getInstance().getY())
+        else  if(getX() < Player.getInstance().getX() && getY() > Player.getInstance().getY())
         {
-
             direction = Direction.NORTH_EAST;
         }
 
-         else if(getX() >= Player.getInstance().getX() && getY() >= Player.getInstance().getY())
+         else if(getX() > Player.getInstance().getX() && getY() > Player.getInstance().getY())
         {
             direction = Direction.NORTH_WEST;
         }
@@ -212,7 +228,7 @@ public class Enemy extends Entity
         {
             direction = Direction.EAST;
         }
-        else  if(getX() >= Player.getInstance().getX())
+        else  if(getX() > Player.getInstance().getX())
         {
             direction = Direction.WEST;
         }
@@ -220,7 +236,7 @@ public class Enemy extends Entity
         {
             direction = Direction.SOUTH;
         }
-        else  if(getY() >= Player.getInstance().getY())
+        else  if(getY() > Player.getInstance().getY())
         {
             direction = Direction.NORTH;
         }
@@ -257,10 +273,10 @@ public class Enemy extends Entity
     }
 
     public boolean wasStolen(){
-        int submapnum = gamePanel.tileMap.subMapFinder(patrolCoord);
+        //int submapnum = gamePanel.tileMap.subMapFinder(patrolCoord);
 
-        return !gamePanel.checkIteminSubMap(submapnum);
-
+        //return !gamePanel.checkIteminSubMap(submapnum);
+        return false;
     }
 
     @Override

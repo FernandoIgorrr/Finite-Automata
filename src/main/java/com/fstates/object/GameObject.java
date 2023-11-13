@@ -2,6 +2,8 @@ package com.fstates.object;
 
 import com.fstates.library.*;
 
+import java.awt.*;
+
 /**
  * A interface GameObject é a classe "raíz" da aplicação.
  * Quase tudo é um objeto de jogo (vulgo gameobject),
@@ -13,7 +15,7 @@ import com.fstates.library.*;
 */
 public interface GameObject
 {
-    
+    public void draw(Graphics2D g);
     public void update();
    //public void changeState(State state);
 }

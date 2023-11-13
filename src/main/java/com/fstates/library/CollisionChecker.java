@@ -20,7 +20,7 @@ public class CollisionChecker
         int entityRightCol  = entity.getCollisionArea().finalX  / gamePanel.tileSize;
         int entityBottomRow = entity.getCollisionArea().finalY   / gamePanel.tileSize;
 
-        char tileNW, tileNE, tileSW, tileSE;
+        Character tileNW, tileNE, tileSW, tileSE;
 
         if(entityLeftCol < 0    || entityLeftCol > 40      ||
            entityRightCol < 1   || entityRightCol > 41     ||
@@ -42,14 +42,14 @@ public class CollisionChecker
            // System.out.println("TILES:\t (" + entityTopRow + "," + entityRightCol + ")\n \t\t(" + entityBottomRow + "," + entityRightCol + ")");
 
             //System.out.println(entity.getDirection());
-            switch (entity.getDirection()) {
+            switch (entity.getDirection())
+            {
                 case NORTH:
-
                     entityTopRow    = (int)((double)entity.getCollisionArea().initialY - entity.getSpeed()) / gamePanel.tileSize;
 
                     if (
-                            (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityLeftCol]) ||
-                                    (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityRightCol]))
+                            (boolean) gamePanel.tileManager.getTiles()[entityTopRow][entityLeftCol].collide() ||
+                                    (boolean) gamePanel.tileManager.getTiles()[entityTopRow][entityRightCol].collide())
                     {
                         entity.getCollision().collisionOn        = true;
                         entity.getCollision().collisionDirection = Direction.NORTH;
@@ -61,8 +61,8 @@ public class CollisionChecker
                     entityBottomRow    = (int)((double)entity.getCollisionArea().finalY + entity.getSpeed())/gamePanel.tileSize;
 
                     if (
-                            (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityLeftCol]) ||
-                                    (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityRightCol]))
+                            (boolean) gamePanel.tileManager.getTiles()[entityBottomRow][entityLeftCol].collide() ||
+                                    (boolean) gamePanel.tileManager.getTiles()[entityBottomRow][entityRightCol].collide())
                     {
                         entity.getCollision().collisionOn = true;
                         entity.getCollision().collisionDirection = Direction.SOUTH;
@@ -73,8 +73,8 @@ public class CollisionChecker
                     entityRightCol    = (int)((double)entity.getCollisionArea().finalX + entity.getSpeed())/gamePanel.tileSize;
 
                     if (
-                            (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityRightCol]) ||
-                                    (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityRightCol]))
+                            (boolean) gamePanel.tileManager.getTiles()[entityTopRow][entityRightCol].collide() ||
+                                    (boolean) gamePanel.tileManager.getTiles()[entityBottomRow][entityRightCol].collide())
                     {
                         entity.getCollision().collisionOn = true;
                         entity.getCollision().collisionDirection = Direction.EAST;
@@ -84,10 +84,9 @@ public class CollisionChecker
 
                     entityLeftCol    = (int)((double)entity.getCollisionArea().initialX - entity.getSpeed())/gamePanel.tileSize;
 
-
                     if (
-                            (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityLeftCol]) ||
-                                    (boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityLeftCol]))
+                            (boolean) gamePanel.tileManager.getTiles()[entityTopRow][entityLeftCol].collide() ||
+                                    (boolean) gamePanel.tileManager.getTiles()[entityBottomRow][entityLeftCol].collide())
                     {
                         entity.getCollision().collisionOn = true;
                         entity.getCollision().collisionDirection = Direction.WEST;
@@ -101,7 +100,7 @@ public class CollisionChecker
                     entityRightCol    = (int)((double)entity.getCollisionArea().finalX + entity.getSpeed())/gamePanel.tileSize;
 
 
-                    if(((boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityRightCol])))
+                    if(((boolean) gamePanel.tileManager.getTiles()[entityTopRow][entityRightCol].collide()))
                     {
                         entity.getCollision().collisionOn = true;
                         entity.getCollision().collisionDirection = Direction.NORTH_EAST;
@@ -115,7 +114,7 @@ public class CollisionChecker
                     entityLeftCol    = (int)((double)entity.getCollisionArea().initialX - entity.getSpeed())/gamePanel.tileSize;
 
 
-                    if( ((boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityTopRow][entityLeftCol])))
+                    if( ((boolean) gamePanel.tileManager.getTiles()[entityTopRow][entityLeftCol].collide()))
                     {
                         entity.getCollision().collisionOn = true;
                         entity.getCollision().collisionDirection = Direction.NORTH_WEST;
@@ -127,7 +126,7 @@ public class CollisionChecker
                     entityBottomRow   = (int)((double)entity.getCollisionArea().finalY + entity.getSpeed())/gamePanel.tileSize;
                     entityRightCol    = (int)((double)entity.getCollisionArea().finalX + entity.getSpeed())/gamePanel.tileSize;
 
-                    if((boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityRightCol]))
+                    if((boolean) gamePanel.tileManager.getTiles()[entityBottomRow][entityRightCol].collide())
                     {
                         entity.getCollision().collisionOn = true;
                         entity.getCollision().collisionDirection = Direction.SOUTH_EAST;
@@ -139,7 +138,7 @@ public class CollisionChecker
                     entityBottomRow  = (int)((double)entity.getCollisionArea().finalY + entity.getSpeed())/gamePanel.tileSize;
                     entityLeftCol    = (int)((double)entity.getCollisionArea().initialX - entity.getSpeed())/gamePanel.tileSize;
 
-                    if((boolean) gamePanel.tileMap.getTileColision().get(gamePanel.tileMap.getMap()[entityBottomRow][entityLeftCol]))
+                    if((boolean) gamePanel.tileManager.getTiles()[entityBottomRow][entityLeftCol].collide())
                     {
                         //entity.setDirection(Direction.WEST);
                         entity.getCollision().collisionOn = true;

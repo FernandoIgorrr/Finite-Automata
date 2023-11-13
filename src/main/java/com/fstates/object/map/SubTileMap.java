@@ -4,6 +4,8 @@ import com.fstates.library.Area;
 import com.fstates.library.Coordinate;
 import com.fstates.object.GameObject;
 
+import java.awt.*;
+
 public class SubTileMap implements GameObject
 {
     int num;
@@ -36,6 +38,11 @@ public class SubTileMap implements GameObject
 
     public int getNum() {
         return num;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+
     }
 
     @Override
